@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图灵</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <style>
+        #app {
+            margin: 0 auto;
+            height: 260px;
+            width: 254px;
+
+        }
+        input {
+            border-radius: 3px;
+            height: 25px;
+            border: 1.5px solid#CCC;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <p>
+            唠两块钱的（以?结尾）
+            <input type="text" v-model="question">
+        </p>
+        <p>{{answer}}</p>
+        <ul>
+            <li v-for="chat in chats">
+                <p>{{chat.q}}</p>
+                <p>{{chat.r}}</p>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                question: '',
+                answer: '你说啥我妹听着',
+                chats:[]
+            },
+            watch: {
+                question: function () {
+                    this.answer = '等你说完'
+                    this.getAnswer()
+                }
+            },
+            methods: {
+                getAnswer() {
+                    if (this.question.indexOf('?')!==-1){
+                        this.answer = '让我想一想'
+                        axios.post('http://www.tuling123.com/openapi/api?key=89368588d2fc498f985780c757fb03c0&info='+this.question+'&userid=626208')
+                            .then(res=>{
+                                if (res.data.code===0){
+                                    this.answer = res.data.data;
+                                }else{
+                                    this.answer = res.data.text;
+                                    this.chats.push({
+                                        q:"小杨: "+this.question,
+                                        r:"小图: "+this.answer
+                                    })
+                                    this.question=''
+                                }
+                            })
+                            .catch(err=>{
+                                console.log(err);
+                            })
+                    }
+                },
+
+                addNewChats(str1,str2){
+                    this.chats.push({
+                        q:"小杨: "+str1,
+                        r:"小图: "+str2
+                    })
+                }
+            }
+        })
+    </script>
+</body>
+</html>
