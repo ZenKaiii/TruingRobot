@@ -52,7 +52,7 @@
                 getAnswer() {
                     if (this.question.indexOf('?')!==-1){
                         this.answer = '让我想一想'
-                        axios.post('http://www.tuling123.com/openapi/api?key=89368588d2fc498f985780c757fb03c0&info='+this.question+'&userid=626208')
+                        axios.post('https://www.tuling123.com/openapi/api?key=89368588d2fc498f985780c757fb03c0&info='+this.question+'&userid=626208')
                             .then(res=>{
                                 if (res.data.code===0){
                                     this.answer = res.data.data;
