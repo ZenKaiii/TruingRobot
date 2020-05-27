@@ -44,13 +44,13 @@
             },
             watch: {
                 question: function () {
-                    this.answer = '等你说完'
+                    this.answer = '等你说完咩~记得结尾要有问号呀'
                     this.getAnswer()
                 }
             },
             methods: {
                 getAnswer() {
-                    if (this.question.indexOf('？')!==-1){
+                    if (this.question.indexOf('？')!==-1 || this.question.indexOf('?')!==-1){
                         this.answer = '让我想一想'
                         axios.post('https://www.tuling123.com/openapi/api?key=89368588d2fc498f985780c757fb03c0&info='+this.question+'&userid=626208')
                             .then(res=>{
